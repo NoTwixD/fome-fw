@@ -150,6 +150,7 @@ struct_no_prefix engine_configuration_s
 #define IAT_CURVE_SIZE 16
 
 #define VBAT_INJECTOR_CURVE_SIZE 8
+#define INJECTOR_DEADTIME_PRESSURE_CURVE_SIZE 8
 
 #define DWELL_CURVE_SIZE 8
 
@@ -383,6 +384,10 @@ struct injector_s
 	float flow;This is your injector flow at the fuel pressure used in the vehicle.;"", 1, 0, 0, 99999, 2
 	uint16_t[VBAT_INJECTOR_CURVE_SIZE] autoscale battLagCorrBins;;"volts", 0.01, 0, 0, 20, 2
 	uint16_t[VBAT_INJECTOR_CURVE_SIZE] autoscale battLagCorr;ms delay between injector open and close dead times;"ms", 0.01, 0, 0, 50, 2
+
+	uint16_t[8] autoscale deadtimePressureCorrBins;Injector differential pressure bins.;"kPa", 1, 0, 0, 1000, 0
+	uint16_t[8] autoscale deadtimePressureCorr;Deadtime pressure correction multiplier.;"", 0.001, 0, 0, 5, 3
+	bit enableDeadtimePressureCorrection;Enable injector deadtime correction based on injector differential pressure.
 end_struct
 
 injector_s injector

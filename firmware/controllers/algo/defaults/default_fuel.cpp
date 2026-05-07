@@ -31,6 +31,13 @@ static void setBosch02880155868(injector_s& cfg) {
 	cfg.battLagCorr[7] = 0.726;
 }
 
+static void SetDefaultDeadtimePressureCorrection() {
+	engineConfiguration->injector.enableDeadtimePressureCorrection = false;
+
+	copyArray(engineConfiguration->injector.deadtimePressureCorrBins, {250, 300, 350, 400, 450, 500, 550, 600});
+	copyArray(engineConfiguration->injector.deadtimePressureCorr, {939, 1000, 1058, 1127, 1207, 1301, 1423, 1459});
+}
+
 static void setDefaultWarmupFuelEnrichment() {
 	static const float bins[] = {-40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110};
 

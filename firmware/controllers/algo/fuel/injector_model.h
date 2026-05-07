@@ -57,6 +57,9 @@ public:
 
 	using interface_t = IInjectorModel; // Mock interface
 
+protected:
+	float getDeadtimePressureMultiplier() const;
+
 private:
 	const injector_s* const m_cfg;
 };

@@ -152,11 +152,36 @@ float InjectorModelWithConfig::getInjectorFlowRatio() {
 	return flowRatio;
 }
 
+float InjectorModelWithConfig::getDeadtimePressureMultiplier() const {
+	// Feature disabled -> no correction
+	if (!m_cfg->enableDeadtimePressureCorrection) {
+		return 1.0f;
+	}
+
+	expected<float> diffPressure = getFuelDifferentialPressure();
+
+	// If we cannot determine pressure, fail safe to nominal
+	if (!diffPressure) {
+		return 1.0f;
+	}
+
+	float pressure = diffPressure.Value;
+
+	// Broken sensor or invalid math
+	if (pressure <= 0) {
+		return 1.0f;
+	}
+
+	return interpolate2d(pressure, m_cfg->deadtimePressureCorrBins, m_cfg->deadtimePressureCorr);
+}
+
 float InjectorModelWithConfig::getDeadtime() const {
-	return interpolate2d(
+	float battDeadtime = interpolate2d(
 			Sensor::get(SensorType::BatteryVoltage).value_or(VBAT_FALLBACK_VALUE),
 			m_cfg->battLagCorrBins,
 			m_cfg->battLagCorr);
+
+	return battDeadtime * getDeadtimePressureMultiplier();
 }
 
 float InjectorModelBase::getInjectionDuration(float fuelMassGram) const {

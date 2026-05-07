@@ -318,6 +318,7 @@ bool validateConfig() {
 	}
 
 	ensureArrayIsAscending("Injector deadtime", engineConfiguration->injector.battLagCorrBins);
+	ensureArrayIsAscending("Injector deadtime pressure", engineConfiguration->injector.deadtimePressureCorrBins);
 
 	// Fueling
 	{
