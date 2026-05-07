@@ -31,11 +31,11 @@ static void setBosch02880155868(injector_s& cfg) {
 	cfg.battLagCorr[7] = 0.726;
 }
 
-static void SetDefaultDeadtimePressureCorrection() {
-	engineConfiguration->injector.enableDeadtimePressureCorrection = false;
+static void setDefaultDeadtimePressureCorrection(injector_s& cfg) {
+	cfg.enableDeadtimePressureCorrection = false;
 
-	copyArray(engineConfiguration->injector.deadtimePressureCorrBins, {250, 300, 350, 400, 450, 500, 550, 600});
-	copyArray(engineConfiguration->injector.deadtimePressureCorr, {939, 1000, 1058, 1127, 1207, 1301, 1423, 1459});
+	copyArray(cfg.deadtimePressureCorrBins, {250, 300, 350, 400, 450, 500, 550, 600});
+	copyArray(cfg.deadtimePressureCorr, {0.939f, 1.000f, 1.058f, 1.127f, 1.207f, 1.301f, 1.423f, 1.459f});
 }
 
 static void setDefaultWarmupFuelEnrichment() {
@@ -239,6 +239,10 @@ void setDefaultFuel() {
 	// Injector deadtime
 	setBosch02880155868(engineConfiguration->injector);
 	setBosch02880155868(engineConfiguration->injectorSecondary);
+
+	// Pressure deadtime correction defaults
+	setDefaultDeadtimePressureCorrection(engineConfiguration->injector);
+	setDefaultDeadtimePressureCorrection(engineConfiguration->injectorSecondary);
 
 	// Tables
 	setFuelTablesLoadBin(10, 160);
